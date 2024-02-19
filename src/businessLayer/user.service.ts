@@ -7,6 +7,7 @@ import { Tache, TacheSchema } from "src/schemas/tache.schema";
 import { CreateUserDto } from "src/user/DTO/CreayeUser.dto";
 import { PaginatedDto } from "src/DTO/pagination.dto";
 import { UserRepositoryImp } from "src/Repository/ImpUser.repositpry";
+import { UserTache } from "src/DTO/userTache.dto";
 
 @Injectable()
 
@@ -29,5 +30,8 @@ export class UsersService {
 
     getUsers(){
         return this.userModel.find().populate('tache');
+    }
+    getTachesUser(id : string) : Promise<UserTache>{
+        return this.userRepository.findTachesUser(id);
     }
 }

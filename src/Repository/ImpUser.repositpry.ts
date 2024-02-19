@@ -6,12 +6,18 @@ import { InjectModel } from "@nestjs/mongoose";
 import { User } from "src/schemas/user.schema";
 import { Tache } from "src/schemas/tache.schema";
 import { Model } from "mongoose";
+import { UserTache } from "src/DTO/userTache.dto";
 
 @Injectable()
 export class UserRepositoryImp implements UserRepository{
 
     constructor( @InjectModel(User.name) private userModel: Model<User>,
     @InjectModel(Tache.name) private tacheModel: Model<Tache>){}
+
+
+    findTachesUser(id: string): Promise<UserTache> {
+        return this.userModel.findById(id).select('username role -tache').populate('tache');
+    }
 
 
     // private convert(user: User): CreateUserDto {
@@ -27,6 +33,7 @@ export class UserRepositoryImp implements UserRepository{
     async findAll(page: number , limit: number): Promise<PaginatedDto<User>> {
         const users = await this.userModel.find().limit(limit).skip((page- 1) * limit).exec();
         const itemCount = await this.userModel.countDocuments();
+        
         return new PaginatedDto<User>(users, page, limit, itemCount)
     }
     

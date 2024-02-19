@@ -1,4 +1,4 @@
-import { Body, Controller, Get } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import { LoginDto } from 'src/DTO/login.dto';
 import { AuthService } from 'src/businessLayer/auth.service';
 
@@ -6,7 +6,7 @@ import { AuthService } from 'src/businessLayer/auth.service';
 export class AuthController {
     constructor(private authService: AuthService){}
 
-    @Get('/login')
+    @Post('/login')
     login(@Body() loginDto: LoginDto): Promise<{ token: string }> {
         return  this.authService.login(loginDto);
     }
